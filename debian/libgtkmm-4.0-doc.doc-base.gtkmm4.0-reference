@@ -1,0 +1,9 @@
+Document: gtkmm4.0-reference
+Title: gtkmm 4.0 Reference Manual
+Author: Doxygen
+Abstract: Reference Manual for gtkmm 4.0 (C++ bindings for GTK4)
+Section: Programming/C++
+
+Format: HTML
+Index: /usr/share/doc/gtkmm-4.0/reference/html/index.html
+Files: /usr/share/doc/gtkmm-4.0/reference/html/*.html

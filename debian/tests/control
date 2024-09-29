@@ -1,0 +1,3 @@
+Tests: build
+Depends: build-essential, libgtkmm-4.0-dev, xauth, xvfb
+Restrictions: allow-stderr, superficial

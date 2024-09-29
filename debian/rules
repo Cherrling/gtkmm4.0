@@ -1,4 +1,29 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=+lto
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
+
+# Only do strict symbols checking on 64-bit architectures except riscv64
+ifneq (,$(filter $(DEB_HOST_ARCH),riscv64))
+export DPKG_GENSYMBOLS_CHECK_LEVEL = 0
+else ifeq ($(DEB_HOST_ARCH_BITS),64)
+export DPKG_GENSYMBOLS_CHECK_LEVEL = 4
+else
+export DPKG_GENSYMBOLS_CHECK_LEVEL = 0
+endif
+
 %:
-	dh $@
+	dh $@ --buildsystem=meson --without autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-Dbuild-documentation=true \
+		-Dmaintainer-mode=true \
+		-Dwarnings=max
+
+# Don't compress doxygen tag files
+override_dh_compress:
+	dh_compress -X.tag -X.cc -X.ui
+
+override_dh_auto_test:
+	xvfb-run -a dh_auto_test
